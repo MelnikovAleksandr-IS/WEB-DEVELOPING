@@ -18,17 +18,14 @@ $rolesMethods = [
     ],
 ];
 
-// Получение текущей роли пользователя из запроса
 $currentUserRole = $_GET['role'];
 
-// Получение запрашиваемого метода из запроса
 $requestedMethod = $_SERVER['REQUEST_METHOD'];
 
 if (!isset($_GET['role']) || !in_array($_GET['role'], $rolesMethods)) {
     echo "Неверная роль";
     exit;
 
-// Проверка доступа
 if (in_array($requestedMethod, $rolesMethods[$currentUserRole])) {
     // Предоставить доступ
     echo "Доступ разрешен";
