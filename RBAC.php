@@ -4,29 +4,32 @@
 const ROLE_ADMIN = 'admin';
 const ROLE_USER = 'user';
 
-// Определение разрешений
-const PERMISSION_READ = 'read';
-const PERMISSION_WRITE = 'write';
-
-// Связь ролей и разрешений
-$rolesPermissions = [
+// Связь ролей и методов запроса
+$rolesMethods = [
     ROLE_ADMIN => [
-        PERMISSION_READ,
-        PERMISSION_WRITE,
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE',
     ],
     ROLE_USER => [
-        PERMISSION_READ,
+        'GET',
+        'POST',
     ],
 ];
 
 // Получение текущей роли пользователя из запроса
 $currentUserRole = $_GET['role'];
 
-// Получение запрашиваемого разрешения из запроса
-$requestedPermission = $_GET['permission'];
+// Получение запрашиваемого метода из запроса
+$requestedMethod = $_SERVER['REQUEST_METHOD'];
+
+if (!isset($_GET['role']) || !in_array($_GET['role'], $rolesMethods)) {
+    echo "Неверная роль";
+    exit;
 
 // Проверка доступа
-if (in_array($requestedPermission, $rolesPermissions[$currentUserRole])) {
+if (in_array($requestedMethod, $rolesMethods[$currentUserRole])) {
     // Предоставить доступ
     echo "Доступ разрешен";
 } else {
